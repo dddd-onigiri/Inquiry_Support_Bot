@@ -29,6 +29,7 @@ st.write('右のリンクから「Sign in」をしてAPIキーを取得してく
 
 st.write("こんにちは！何でも聞いてください（あくまで参考に）")
 input_apikey = st.text_input("取得したAPIキーを貼り付けてください")
+openai.apikey = input_apikey
 
 if input_apikey == "":
     st.error("apiキーを貼り付けてください。")
