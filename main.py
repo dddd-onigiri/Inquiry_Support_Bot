@@ -33,7 +33,7 @@ input_apikey = st.text_input("取得したAPIキーを貼り付けてくださ�
 if input_apikey == "":
     st.error("apiキーを貼り付けてください。")
 else:
-    openai.api_key = input_apikey
+    openai.api_key = str(input_apikey)
 
     system_message = """
     あなたは研究アシスタントです。ユーザは高校生で、あなたに研究に関する質問を投げかけます。
