@@ -25,8 +25,7 @@ st.title("探究アシスタント（ChatGPT3）")
 st.caption("Created by Daiki Ito")
 
 st.write('右のリンクから「Sign in」をしてAPIキーを取得してください',
-         'https://beta.openai.com'
-         '/account/api-keys')
+         'https://beta.openai.com/account/api-keys')
 
 st.write("こんにちは！何でも聞いてください（あくまで参考にね）")
 input_apikey = st.text_input("取得したAPIキーを貼り付けてください")
