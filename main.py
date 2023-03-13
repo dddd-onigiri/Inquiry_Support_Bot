@@ -58,12 +58,12 @@ else:
             max_tokens=1024
         )
         memory = ConversationBufferMemory(return_messages=True)
-        conversation = ConversationChain(
+        conversation_message = ConversationChain(
             memory=memory,
             prompt=prompt,
             llm=llm
         )
-        return conversation
+        return conversation_message
 
 
     if "generated" not in st.session_state:
