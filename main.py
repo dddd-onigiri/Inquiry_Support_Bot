@@ -27,59 +27,63 @@ st.caption("Created by Daiki Ito")
 st.write('右のリンクから「Sign in」をしてAPIキーを取得してください',
          'https://beta.openai.com/account/api-keys')
 
-st.write("こんにちは！何でも聞いてください（あくまで参考にね）")
+st.write("こんにちは！何でも聞いてください（あくまで参考に）")
 input_apikey = st.text_input("取得したAPIキーを貼り付けてください")
-openai.api_key = "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"
 
-system_message = """
-あなたは研究アシスタントです。ユーザは高校生で、あなたに研究に関する質問を投げかけます。
-アシスタントとして、論文執筆や研究の遂行に役立つ回答を、できる限り根拠を示した上で返してください。"""
-prompt = ChatPromptTemplate.from_messages([
-    SystemMessagePromptTemplate.from_template(system_message),
-    MessagesPlaceholder(variable_name="history"),
-    HumanMessagePromptTemplate.from_template("{input}")
-])
+if input_apikey == "":
+    st.error("apiキーを貼り付けてください。")
+else:
+    openai.api_key = input_apikey
 
-
-@st.cache_resource
-def load_conversation():
-    llm = ChatOpenAI(
-        streaming=True,
-        callback_manager=CallbackManager([
-            StreamlitCallbackHandler(),
-            StreamingStdOutCallbackHandler()
-        ]),
-        verbose=True,
-        temperature=0,
-        max_tokens=1024
-    )
-    memory = ConversationBufferMemory(return_messages=True)
-    conversation = ConversationChain(
-        memory=memory,
-        prompt=prompt,
-        llm=llm
-    )
-    return conversation
+    system_message = """
+    あなたは研究アシスタントです。ユーザは高校生で、あなたに研究に関する質問を投げかけます。
+    アシスタントとして、論文執筆や研究の遂行に役立つ回答を、できる限り根拠を示した上で返してください。"""
+    prompt = ChatPromptTemplate.from_messages([
+        SystemMessagePromptTemplate.from_template(system_message),
+        MessagesPlaceholder(variable_name="history"),
+        HumanMessagePromptTemplate.from_template("{input}")
+    ])
 
 
-if "generated" not in st.session_state:
-    st.session_state.generated = []
-if "past" not in st.session_state:
-    st.session_state.past = []
+    @st.cache_resource
+    def load_conversation():
+        llm = ChatOpenAI(
+            streaming=True,
+            callback_manager=CallbackManager([
+                StreamlitCallbackHandler(),
+                StreamingStdOutCallbackHandler()
+            ]),
+            verbose=True,
+            temperature=0,
+            max_tokens=1024
+        )
+        memory = ConversationBufferMemory(return_messages=True)
+        conversation = ConversationChain(
+            memory=memory,
+            prompt=prompt,
+            llm=llm
+        )
+        return conversation
 
-with st.form("探究アシスタントに質問する（あくまでも参考に）"):
-    user_message = st.text_area("質問を入力してください")
 
-    submitted = st.form_submit_button("質問する")
-    if submitted:
-        conversation = load_conversation()
-        answer = conversation.predict(input=user_message)
+    if "generated" not in st.session_state:
+        st.session_state.generated = []
+    if "past" not in st.session_state:
+        st.session_state.past = []
 
-        st.session_state.past.append(user_message)
-        st.session_state.generated.append(answer)
+    with st.form("探究アシスタントに質問する（あくまでも参考に）"):
+        user_message = st.text_area("質問を入力してください")
 
-        if st.session_state["generated"]:
-            for i in range(len(st.session_state.generated) - 1, -1, -1):
-                message(st.session_state.generated[i], key=str(i))
-                message(st.session_state.past[i], is_user=True,
-                        key=str(i) + "_user")
+        submitted = st.form_submit_button("質問する")
+        if submitted:
+            conversation = load_conversation()
+            answer = conversation.predict(input=user_message)
+
+            st.session_state.past.append(user_message)
+            st.session_state.generated.append(answer)
+
+            if st.session_state["generated"]:
+                for i in range(len(st.session_state.generated) - 1, -1, -1):
+                    message(st.session_state.generated[i], key=str(i))
+                    message(st.session_state.past[i], is_user=True,
+                            key=str(i) + "_user")
