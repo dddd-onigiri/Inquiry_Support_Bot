@@ -63,14 +63,12 @@ def load_conversation():
     return conversation
 
 
-st.title("研究アシスタント")
-
 if "generated" not in st.session_state:
     st.session_state.generated = []
 if "past" not in st.session_state:
     st.session_state.past = []
 
-with st.form("研究アシスタントに質問する"):
+with st.form("探究アシスタントに質問する（あくまでも参考に）"):
     user_message = st.text_area("質問を入力してください")
 
     submitted = st.form_submit_button("質問する")
