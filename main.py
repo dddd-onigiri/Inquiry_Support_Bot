@@ -76,8 +76,8 @@ else:
 
         submitted = st.form_submit_button("質問する")
         if submitted:
-            conversation = load_conversation()
-            answer = conversation.predict(input=user_message)
+            conversation_message = load_conversation()
+            answer = conversation_message.predict(input=user_message)
 
             st.session_state.past.append(user_message)
             st.session_state.generated.append(answer)
