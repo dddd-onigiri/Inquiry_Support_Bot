@@ -58,12 +58,12 @@ else:
             max_tokens=1024
         )
         memory = ConversationBufferMemory(return_messages=True)
-        conversation_message = ConversationChain(
+        conversation = ConversationChain(
             memory=memory,
             prompt=prompt,
             llm=llm
         )
-        return conversation_message
+        return conversation
 
 
     if "generated" not in st.session_state:
@@ -76,8 +76,8 @@ else:
 
         submitted = st.form_submit_button("質問する")
         if submitted:
-            conversation_message = load_conversation()
-            answer = conversation_message.predict(input=user_message)
+            conversation = load_conversation()
+            answer = conversation.predict(input=user_message)
 
             st.session_state.past.append(user_message)
             st.session_state.generated.append(answer)
