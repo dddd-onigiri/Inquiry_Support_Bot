@@ -24,7 +24,7 @@ st.set_page_config(page_title="探究アシスタント", layout="wide")
 st.title("探究アシスタント（ChatGPT3）")
 st.caption("Created by Daiki Ito")
 
-st.write('右のリンクから「Sign in」をしてAPIキーを取得してください',
+st.write('右のリンクから「Sign in」をしてAPIキーを取得してください → ',
          'https://beta.openai.com/account/api-keys')
 
 st.write("こんにちは！何でも聞いてください（あくまで参考に）")
