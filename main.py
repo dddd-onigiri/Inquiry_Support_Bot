@@ -26,7 +26,7 @@ st.write('右のリンクから「Sign in」をしてAPIキーを取得してく
          'https://beta.openai.com/account/api-keys')
 
 st.write("こんにちは！何でも聞いてください（あくまで参考に）")
-input_apikey = "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"
+input_apikey = "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"
 
 #st.text_input("取得したAPIキーを貼り付けてください")
 
